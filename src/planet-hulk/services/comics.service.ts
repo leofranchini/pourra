@@ -40,29 +40,29 @@ class comicService{
         }
 
         async fetchAndStoreComics() {
-            try {
-              const response = await axios.get(
-                `https://gateway.marvel.com:443/v1/public/series/19625/comics?title=Planet%20Hulk&ts=1&apikey=fefc0bc8c1a9f8b8dfa42d4a941b09b0&hash=7e313b232aea5bbada5d0b9d98dbef5c`
-              );
-        
-              const comics = response.data.data.results;
-        
-              for (const comic of comics) {
-                const newComic: comicsType = {
-                  titulo: comics.title,
-                  descricao: comics.description || "",
-                  dataPublicacao: comics.dates.type,
-                  capa: comics.thumbnail.path + "." + comics.thumbnail.extension,
-                };
-        
-                await this.create(newComic);
-              }
-        
-              console.log("Comics guardadas com sucesso no MongoDB.");
-            } catch (error) {
-              console.error(`Erro ao buscar comics: ${error}`);
+          try {
+            const response = await axios.get(
+              `https://gateway.marvel.com/v1/public/series/19625/comics?title=Planet%20Hulk&ts=1&apikey=fefc0bc8c1a9f8b8dfa42d4a941b09b0&hash=7e313b232aea5bbada5d0b9d98dbef5c`
+            );
+      
+            const comics = response.data.data.results;
+      
+            for (const comic of comics) {
+              const newComic: comicsType = {
+                titulo: comic.title,
+                descricao: comic.description || "",
+                dataPublicacao: comic.dates.type,
+                capa: comic.thumbnail.path + "." + comic.thumbnail.extension,
+              };
+      
+              await this.create(newComic);
             }
+      
+            console.log("Comics guardadas com sucesso no MongoDB.");
+          } catch (error) {
+            console.error(`Erro ao buscar comics: ${error}`);
           }
+        }
 }
 
 export default new comicService()

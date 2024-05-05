@@ -33,6 +33,15 @@ class CriadorController{
         return res.json(deleted)
     }
 
+        async fetchCreator(req: Request, res: Response) {
+        try {
+          await criadoresService.fetchAndStoreCreators();
+          res.json({ message: "Criadores buscados com sucesso."});
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
+    }
 
-}
+export default new CriadorController()

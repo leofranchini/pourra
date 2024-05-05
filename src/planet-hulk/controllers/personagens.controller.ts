@@ -32,4 +32,15 @@ class personagemController{
     res.status(200)
     return res.json(deleted)
     }
+
+    async fetchCharacters(req: Request, res: Response) {
+    try {
+        await personagensService.fetchAndStoreCharacters();
+        res.json({ message: "Personagens buscados com sucesso."});
+        } catch (error) {
+        console.error(error);
+        }
+    }
 }
+
+export default new personagemController()

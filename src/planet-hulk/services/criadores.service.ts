@@ -1,5 +1,7 @@
+import { networkInterfaces } from "os"
 import criadoresModel from "../schemas/criadores.schema"
 import { criadoressType } from "../types/criadores.types"
+import axios from "axios"
 
 class criadoresService{
 
@@ -35,6 +37,29 @@ class criadoresService{
             throw new Error(`Ocorreu um erro ao remover este Criador:${error}`)  
             }
         }
+
+        async fetchAndStoreCreators() {
+            try {
+              const response = await axios.get(
+                `https://gateway.marvel.com/v1/public/series/19625/creators?apikey=fefc0bc8c1a9f8b8dfa42d4a941b09b0&hash=7e313b232aea5bbada5d0b9d98dbef5c&ts=1`
+              );
+        
+              const creators = response.data.data.results;
+        
+              for (const creator of creators) {
+                const newCreator: criadoressType = {
+                  nome: creator.fullName,
+                  funcao: creator.role
+                };
+        
+                await this.create(newCreator);
+              }
+        
+              console.log("Criadores achados e guardados com sucesso.");
+            } catch (error) {
+              console.error(`Erro ao buscar personagens: ${error}`);
+            }
+          }
 
 }
 

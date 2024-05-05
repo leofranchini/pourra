@@ -33,6 +33,15 @@ class comicController{
         return res.json(deleted)
     }
 
+        async fetchComics(req: Request, res: Response){
+            try {
+                await comicsService.fetchAndStoreComics
+                res.json("Comics buscadas com sucesso")
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
 }
 
 export default new comicController()
